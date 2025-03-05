@@ -1,6 +1,7 @@
 // C library headers
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // Linux headers
 #include <fcntl.h>
@@ -8,9 +9,10 @@
 #include <termios.h>
 #include <unistd.h>
 
-int main() {
-  printf("Hello, ARM!\n");
+char* getOneMessage(char* total_string);
+int setInCharDevice(char* total_string, int length);
 
+int main() {
   int serial_port = open("/dev/ttyUSB1", O_RDWR);
 
   if (serial_port < 0) {
@@ -44,7 +46,7 @@ int main() {
 
   tty.c_cc[VTIME] = 20;    // Wait for up to 2s (20 deciseconds), returning as soon as any data is received.
   // Wait until 20 bytes received
-  tty.c_cc[VMIN] = 200;
+  tty.c_cc[VMIN] = 180;
 
 	// Set in/out baud rate to be 19200, because that is what the MPPT sends
   cfsetispeed(&tty, B19200);
@@ -57,24 +59,73 @@ int main() {
   }
 
   // Allocate memory for read buffer, set size according to your needs
-  char read_buf [256];
+  char read_buf1 [180];
+  char read_buf2 [180];
+  char total_buf [360];
 
   // Set every bit to zero to use printf more easily
-  memset(&read_buf, '\0', sizeof(read_buf));
+  memset(&read_buf1, '\0', sizeof(read_buf1));
+  memset(&read_buf2, '\0', sizeof(read_buf2));
 
   // Read bytes entered in VTIME and VMIN
-  int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
+  int num_bytes1 = read(serial_port, &read_buf1, sizeof(read_buf1));
+  int num_bytes2 = read(serial_port, &read_buf2, sizeof(read_buf2));
 
   // If num_bytes is -1 a error occured
-  if (num_bytes == -1) {
+  if (num_bytes1 == -1) {
+    printf("Error reading: %s", strerror(errno));
+    return 1;
+  }
+  if (num_bytes2 == -1) {
     printf("Error reading: %s", strerror(errno));
     return 1;
   }
 
-  // Print all data we received from the serial port
-  printf("Read %i bytes. Received message: %s\n", num_bytes, read_buf);
+  // Copy both outputs in 1 array
+  memcpy(total_buf, read_buf1, 180);
+  memcpy(total_buf + 180, read_buf2, 180);
 
   close(serial_port);
 
+  char* messageString = getOneMessage(total_buf);
+
+  printf("Received substring: %sLength:%i\n", messageString, strlen(messageString));
+
+  int done = setInCharDevice(messageString, strlen(messageString));
+  
+  if (done == -1) {
+    printf("An error occured");
+  } 
+
+  printf("Wrote in driver");
+
   return 0;
+}
+
+// This function will set the start of the message out of the string en will return the length of the message
+char* getOneMessage(char* total_string) {
+  char* to_string = strstr(total_string, "PID");
+  char* end_string = strstr(to_string, "\nPID");
+  
+  size_t len = end_string - to_string;
+
+  to_string[len+1] = 0;
+
+  return to_string;
+}
+
+int setInCharDevice(char* total_string, int length) {
+  int char_dev = open("/dev/HelloWorld", O_RDWR);
+  if (char_dev < 0) {
+	  printf("Error %i from open: %s\n", errno, strerror(errno));
+	  return -1;
+  }
+
+  int num_bytes = write(char_dev, total_string, length);
+  if (num_bytes == -1) {
+    printf("Error reading: %s", strerror(errno));
+    return -1;
+  }
+
+  close(char_dev);
 }

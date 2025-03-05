@@ -21,7 +21,6 @@ static ssize_t my_read(struct file *f, char __user *u, size_t l, loff_t *o) {
     if (copy_to_user(u, device_buffer, bytes_read)) {
         return -EFAULT;
     }
-    printk("hello_cdev - Read is called\n");
     return bytes_read;
 }
 

@@ -1,0 +1,7 @@
+# Compiled program #
+*.cmd
+*.o
+*.mod*
+*.symvers
+*.ko
+*.order

@@ -41,7 +41,7 @@ int main() {
     fprintf(stderr, "%s\n", modbus_strerror(errno));
   }
   
-  printf("Read %i bytes. Received message: %d, %d\n", num_bytes, tab_reg[0], tab_reg[1]);
+  printf("Read %i shorts. Received message: %d, %d\n", num_bytes, tab_reg[0], tab_reg[1]);
   
   modbus_close(ctx);
   modbus_free(ctx);
