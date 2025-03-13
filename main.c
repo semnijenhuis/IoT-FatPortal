@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <assert.h>
+#include "curl.h"
 
 // Linux headers
 #include <fcntl.h>
 #include <errno.h>
-#include <termios.h>
 #include <unistd.h>
 
-char** str_split(char* total_serial, const char a_delim);
+static const char* WEBSERVER = "https://test.fatportal.nl/api/Ping";
+static const char* PRODUCTID = "acbf264b076c43c9aeb9a1d6d45a32ae";
 
 int main() {
   char read_serial[200];
@@ -35,21 +35,35 @@ int main() {
 
   const char* test[19] = {"PID", "FW", "SER#", "V", "I", "VPV", "PPV", "CS", "MPPT", "OR", "ERR", "LOAD", "IL", "H19", "H20", "H21", "H22", "H23", "HSDS"};
 
+  char json_string[500] = "{";
+
   for (int i = 0; i < sizeof(test)/sizeof(test[0]); i++) {
     char* to_string = strstr(read_serial, test[i]);
     char* end_string = strstr(to_string, "\n");
 
     size_t len = end_string - to_string;
 
-    len -= (strlen(test[i]) + 1);
+    len -= (strlen(test[i]) + 2);
 
     char* value = malloc(len + 1);
 
     memcpy(value, to_string + (strlen(test[i]) + 1), len);
     value[len] = 0;
 
-    printf("{\"%s\": \"%s\"}\n", test[i], value);
+    strcat(json_string, "\\\"");
+    strcat(json_string, test[i]);
+    strcat(json_string, "\\\": \\\"");
+    strcat(json_string, value);
+    strcat(json_string, "\\\"");
+
+    if (i + 1 < sizeof(test)/sizeof(test[0])) {
+      strcat(json_string, ",");
+    }
   }
+
+  strcat(json_string, "}");
+
+  sendPostRequest(json_string, WEBSERVER, PRODUCTID);
 
   return 0;
 }

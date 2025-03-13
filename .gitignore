@@ -1,2 +1,12 @@
 # Compiled program #
 main
+serial
+readModbus
+.vscode/
+*.h.gch
+*.o
+*.cmd
+*.mod*
+*.symvers
+*.ko
+*.order

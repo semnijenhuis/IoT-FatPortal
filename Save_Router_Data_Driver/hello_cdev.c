@@ -26,7 +26,8 @@ static ssize_t my_read(struct file *f, char __user *u, size_t l, loff_t *o) {
 
 static ssize_t my_write(struct file *f, const char __user *u, size_t l, loff_t *o) {
     int bytes_to_write = l < BUFFER_SIZE ? l : BUFFER_SIZE;
-    for (int i = 0; i < BUFFER_SIZE; i++) {
+    int i;
+    for (i = 0; i < BUFFER_SIZE; i++) {
         device_buffer[i] = '\0';
     }
     if (copy_from_user(device_buffer, u, bytes_to_write)) {
@@ -35,7 +36,7 @@ static ssize_t my_write(struct file *f, const char __user *u, size_t l, loff_t *
     return bytes_to_write;
 }
 
-#define MYMAJOR 251
+#define MYMAJOR 250
 
 static int __init my_init(void) {
     major = register_chrdev(MYMAJOR, "hello_cdev", &fops);

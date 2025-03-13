@@ -4,8 +4,3 @@ curl.o: curl.h curl.c
 	$(CC) curl.h curl.c -c
 main.o: curl.h main.c
 	$(CC) curl.h main.c -c
-
-clean:
-	rm *.o
-	rm *.h.gch
-	rm main
