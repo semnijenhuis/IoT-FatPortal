@@ -1,0 +1,1 @@
+int setInCharDevice(char* total_string, int length);

@@ -10,3 +10,4 @@ readModbus
 *.symvers
 *.ko
 *.order
+.env
