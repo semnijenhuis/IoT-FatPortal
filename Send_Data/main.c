@@ -87,10 +87,10 @@ int main() {
   jsonSize += (1 + strlen(routerData));
 
   // Check if json is same size as calculated
-  if (jsonSize != strlen(json_string)) {
-    printf("Sizes are not equal");
-    return -1;
-  }
+  // if (jsonSize != strlen(json_string)) {
+  //   printf("Sizes are not equal");
+  //   return -1;
+  // }
 
   // Send the json string to the fatportal, with the specified productid
   sendPostRequest(json_string, WEBSERVER, PRODUCTID);

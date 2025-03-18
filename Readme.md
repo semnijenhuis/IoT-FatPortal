@@ -65,3 +65,16 @@ And example of the output is shown in the image below.
 ![Output of readelf -h routerDriver.ko](/Images/Compiled_Program.png)
 
 To check if it is compiled correctly you can look at the class (should be ELF32), and the Type (should be MIPS R3000).
+
+# Programs
+In this git repository are 5 programs which will do different things. All programs together make sure Serial data is written and saved from the RS232 port of the teltonika router, the router data is written and save, and all this data is send to the FATportal.
+
+|Program|Description|
+|-|-|
+|Read_Modbus|Read the data from the Modbus, which is part of Teltonika's RUTOS to be able to control the router, converts the data to JSON, and saves it in the router data device driver|
+|Read_Serial|Read the data from the Serial port, and save it in the serial data driver|
+|Save_Router_Data_Driver|A character device driver where the router data is saved|
+|Save_Serial_Data_Driver|A character device driver where the serial data is saved|
+|Send_Data|A program which reads the data from the serial device driver, converts it to JSON, add the modbus JSON data from the device driver, and send it to the FATportal|
+
+To find more information about the programs self their are more detailed readme's in the folders.

@@ -16,7 +16,8 @@
 union ConvertModbus {
     int i;
     float f;
-    unsigned long l;
+    unsigned long ul;
+    long sl;
     short s[16];
     char c[33];
 };

@@ -32,7 +32,8 @@ int readModbus(char* registerName, short* value) {
   modbus_t *ctx;
   
   // Set every short value to 0
-  memset(&value, '\0', sizeof(value));
+  uint16_t tabReg[registerSize];
+  memset(&tabReg, '\0', sizeof(tabReg));
   
   // Setup modbus location
   ctx = modbus_new_tcp("192.168.1.1", 502);
@@ -56,11 +57,15 @@ int readModbus(char* registerName, short* value) {
   }
   
   // Read from the modbus
-  int num_bytes = modbus_read_registers(ctx, registerLocation, registerSize, value);
+  int num_bytes = modbus_read_registers(ctx, registerLocation, registerSize, tabReg);
   
   // Check if reading is complete
   if (num_bytes == -1) {
     fprintf(stderr, "%s\n", modbus_strerror(errno));
+  }
+  
+  for (int i = 0; i < registerSize; i++) {
+    value[i] = tabReg[i];
   }
   
   // Close and set the modbus free
@@ -85,7 +90,7 @@ int getRegisterLocation(char* registerName) {
   } else if (strcmp(registerName, "tx last 24h") == 0) {
     return TX_LAST_24_HOURS_REG;
   } else if (strcmp(registerName, "temp") == 0) {
-    return TX_LAST_24_HOURS_REG;
+    return DEVICE_TEMP_REG;
   } else {
     return -1;
   }

@@ -7,7 +7,7 @@
 
 int main() {
     // Create a variable of size 200 (Which is enough to save the current string in) and set every byte as 0
-    char saveVariable[220];
+    char saveVariable[250];
     memset(&saveVariable, '\0', sizeof(saveVariable));
     // Create a union which can convert the shorts given by the modbus into 
     union ConvertModbus converter;
@@ -34,19 +34,19 @@ int main() {
     strcat(saveVariable, "\\\",\\\"serialNumber\\\":\\\"");
     strcat(saveVariable, converter.c);
     // Read the hostname from the modbus
-    readModbus("rx last 24h", converter.s);
-    // Overwrite a string to add to the json of the rx of the last 24h, and add it to the save variable
-    sprintf(buffer, "\\\",\\\"tx\\\":\\\"%lu", converter.l);
-    strcat(saveVariable, buffer);
-    // Read the hostname from the modbus
     readModbus("tx last 24h", converter.s);
     // Overwrite a string to add to the json of the tx of the last 24h, and add it to the save variable
-    sprintf(buffer, "\\\",\\\"tx\\\":\\\"%lu\\\"", converter.l);
+    sprintf(buffer, "\\\",\\\"tx\\\":\\\"%lu", converter.ul);
+    strcat(saveVariable, buffer);
+    // Read the hostname from the modbus
+    readModbus("rx last 24h", converter.s);
+    // Overwrite a string to add to the json of the rx of the last 24h, and add it to the save variable
+    sprintf(buffer, "\\\",\\\"rx\\\":\\\"%lu", converter.ul);
     strcat(saveVariable, buffer);
     // Read the hostname from the modbus
     readModbus("temp", converter.s);
     // Overwrite a string to add to the json of the temperature, and add it to the save variable
-    sprintf(buffer, "\\\",\\\"temp\\\":\\\"%lu\\\"", converter.l);
+    sprintf(buffer, "\\\",\\\"temp\\\":\\\"%ld\\\"", converter.sl);
     strcat(saveVariable, buffer);
     // Set the created json in the character device
     setInCharDevice(saveVariable, strlen(saveVariable));
