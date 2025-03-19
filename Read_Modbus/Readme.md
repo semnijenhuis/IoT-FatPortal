@@ -22,3 +22,6 @@ export CC=${TOOLCHAIN}/bin/mips-openwrt-linux-musl-gcc
 Next you can simply call the `make` command in the terminal and the programs will be created.
 
 To check if the program succesfully compiled you can do `readelf -h ./readModbus`, and if you did it succesfully you will see the ELF32 and MIPS R3000 just as with the library compile.
+
+# Install
+Before you run the program you need to make sure the defined serial device driver exists. If you want to install the driver look at [router character device driver](../Save_Router_Data_Driver/Readme.md). Next you can either run the program manual or add it to the crontab, but before you can run it you need to copy it to the router with for example scp. Next you can run it with `./readModbus` if you are in the same directory as the program. If you want to add it to the crontab, you can run `crontab -e`. Next you click on  the `i` key to be able to edit the crontab, add the line `* * * * * /path/to/program/readModbus` to the bottom of the file, click on ESC, type `:wq`, and click on ENTER. Now the readModbus program will run every minute.

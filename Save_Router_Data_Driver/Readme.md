@@ -6,13 +6,20 @@ Go to the direction of the program. Next define the environment variables in the
 
 Finally, you can simply call the `make` command in the terminal and the programs will be created. 
 
-To check if the compilation was succesfull you can run `readelf -h routerDriver.ko` and if the output shows ELF32 and MIPS R3000, as shown in the picture below, the program compiled succesfully. 
+To check if the compilation was succesfull you can run `readelf -h saveRouterDriver.ko` and if the output shows ELF32 and MIPS R3000, as shown in the picture below, the program compiled succesfully. 
 
 ![Output of readelf -h libmodbus.a](/Images/Compiled_Program.png)
 
 # Instal Driver
-The only necessary file of the compiled files you need is the `routerDriver.ko` file. You can copy this file to the router with for example the scp command. When you are on the router in the same folder as the `routerDriver.ko` file you can simply type `insmod routerDriver.ko`. Next you can link the driver as a device with the command `mknod /dev/routerDriver c 250 0`. To check if the driver works you can simply put 1 character in the driver with `echo t\ > /dev/routerDriver`, and retrieve the character with `head -1 /dev/routerDriver`. As shown in the image below
+The only necessary file of the compiled files you need is the `saveRouterDriver.ko` file. You can copy this file to the router with for example the scp command. When you are on the router in the same folder as the `saveRouterDriver.ko` file you can simply type `insmod saveRouterDriver.ko`. Next you can link the driver as a device with the command `mknod /dev/routerDriver c 250 0`. To check if the driver works you can simply put 1 character in the driver with `echo t\ > /dev/routerDriver`, and retrieve the character with `head -1 /dev/routerDriver`. As shown in the image below
 
 ![Output of readelf -h libmodbus.a](/Images/Set_Info_In_Char_Dev.png)
 
 To remove the driver you can run `rmmod routerDriver`.
+
+Every time the router reboots the driver isn't loaded anymore. Therefore it is useful to add this installation to the startup script of the router. This startup script can be found in the webUI->System->Mainenance->Custom Script of the router. Next add the following lines to the script after the comments:
+```bash
+insmod /path/to/file/saveRouterDriver.ko
+mknod /path/to/file/routerDriver c 250 0
+```
+!!MAKE SURE YOU CLICK `SAVE & APPLY` BECAUSE OTHERWISE THESE CHANGES WILL NOT BE SAVED!!

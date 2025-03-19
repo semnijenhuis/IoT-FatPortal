@@ -11,8 +11,16 @@ To check if the compilation was succesfull you can run `readelf -h serialDriver.
 ![Output of readelf -h libmodbus.a](/Images/Compiled_Program.png)
 
 # Instal Driver
-The only necessary file of the compiled files you need is the `serialDriver.ko` file. You can copy this file to the router with for example the scp command. When you are on the router in the same folder as the `serialDriver.ko` file you can simply type `insmod serialDriver.ko`. Next you can link the driver as a device with the command `mknod /dev/serialDriver c 250 0`. To check if the driver works you can simply put 1 character in the driver with `echo t\ > /dev/serialDriver`, and retrieve the character with `head -1 /dev/serialDriver`. As shown in the image below
+The only necessary file of the compiled files you need is the `saveSerialDriver.ko` file. You can copy this file to the router with for example the scp command. When you are on the router in the same folder as the `saveSerialDriver.ko` file you can simply type `insmod saveSerialDriver.ko`. Next you can link the driver as a device with the command `mknod /dev/serialDriver c 251 0`. To check if the driver works you can simply put 1 character in the driver with `echo t\ > /dev/serialDriver`, and retrieve the character with `head -1 /dev/serialDriver`. As shown in the image below
 
 ![Output of readelf -h libmodbus.a](/Images/Set_Info_In_Char_Dev.png)
 
 To remove the driver you can run `rmmod serialDriver`.
+
+Every time the router reboots the driver isn't loaded anymore. Therefore it is useful to add this installation to the startup script of the router. This startup script can be found in the webUI->System->Mainenance->Custom Script of the router. Next add the following lines to the script after the comments:
+```bash
+insmod /path/to/file/saveSerialDriver.ko
+mknod /path/to/file/serialDriver c 251 0
+```
+!!MAKE SURE YOU CLICK `SAVE & APPLY` BECAUSE OTHERWISE THESE CHANGES WILL NOT BE SAVED!!
+

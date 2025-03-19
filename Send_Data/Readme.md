@@ -15,4 +15,8 @@ Finally, you can simply call the `make` command in the terminal and the programs
 
 To check if the compilation was succesfull you can run `readelf -h sendData` and if the output shows ELF32 and MIPS R3000, as shown in the picture below, the program compiled succesfully. 
 
-![Output of readelf -h libmodbus.a](/Images/Compiled_Program.png)
+![Output of readelf -h sendData](/Images/Compiled_Program.png)
+
+
+# Install
+Before you run the program you need to make sure the defined serial and router device driver exists. If you want to install the drivers look at [router character device driver](../Save_Router_Data_Driver/Readme.md) and [serial character device driver](../Save_Serial_Data_Driver/Readme.md). Next you can either run the program manual or add it to the crontab, but before you can run it you need to copy it to the router with for example scp. Next you can run it with `./sendData` if you are in the same directory as the program. If you want to add it to the crontab, you can run `crontab -e`. Next you click on the `i` key to be able to edit the crontab, add the line `*/5 * * * * /path/to/program/sendData` to the bottom of the file, click on ESC, type `:wq`, and click on ENTER. Now the readModbus program will run every 5 minutes.

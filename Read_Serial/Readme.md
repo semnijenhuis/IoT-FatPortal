@@ -15,4 +15,7 @@ Finally, you can simply call the `make` command in the terminal and the programs
 
 To check if the compilation was succesfull you can run `readelf -h readSerial` and if the output shows ELF32 and MIPS R3000, as shown in the picture below, the program compiled succesfully. 
 
-![Output of readelf -h libmodbus.a](/Images/Compiled_Program.png)
+![Output of readelf -h readSerial](/Images/Compiled_Program.png)
+
+# Install 
+Before you run the program you need to make sure the defined serial device driver exists. If you want to install the driver look at [serial character device driver](../Save_Serial_Data_Driver/Readme.md). Next you can either run the program manual or add it as a startup script, but before you can run it you need to copy it to the router with for example scp. Next you can run it with `./readSerial` if you are in the same directory as the program, and stop the program using CTRL+C. If you want to run this from the startup go to router webUI->System->Maintenance->Custom Scripts, and add the following line to the script before `exit 0`: `/path/to/program/readSerial &`. The & at the and makes sure the router won't stay in the program itself and will put the program in the background. !!MAKE SURE YOU CLICK `SAVE & APPLY` BECAUSE OTHERWISE THESE CHANGES WILL NOT BE SAVED!!
