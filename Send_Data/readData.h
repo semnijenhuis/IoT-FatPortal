@@ -1,0 +1,1 @@
+int getDataFromDriver(char* data, const char* device);

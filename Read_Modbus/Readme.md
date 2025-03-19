@@ -19,6 +19,6 @@ export STAGING_DIR=~/Documents/rutos-ath79-trb2-sdk/staging_dir
 export TOOLCHAIN=${STAGING_DIR}/toolchain-mips_24kc_gcc-8.4.0_musl
 export CC=${TOOLCHAIN}/bin/mips-openwrt-linux-musl-gcc
 ```
-Next you can simply call the make command in the terminal and the programs will be created.
+Next you can simply call the `make` command in the terminal and the programs will be created.
 
 To check if the program succesfully compiled you can do `readelf -h ./readModbus`, and if you did it succesfully you will see the ELF32 and MIPS R3000 just as with the library compile.

@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static const char* parameters[19] = {"PID", "FW", "SER#", "V", "I", "VPV", "PPV", "CS", "MPPT", "OR", "ERR", "LOAD", "IL", "H19", "H20", "H21", "H22", "H23", "HSDS"};
+// Create a array of character arrays to save the parameters as character arrays (strings), make sure the number of parameters is defined between the array brackets
+// The order is not important, but it is important that every parameter exists
+static const char* parameters[19] = {"PID", "FW", "V", "SER#", "I", "VPV", "PPV", "CS", "MPPT", "OR", "ERR", "LOAD", "IL", "H19", "H20", "H21", "H22", "H23", "HSDS"};
 
 // Get the size of the serial as a json
 int getJsonSizeFromSerial(char* serialToConvert) {   
@@ -17,8 +19,8 @@ int getJsonSizeFromSerial(char* serialToConvert) {
     char* end_string = strstr(to_string, "\n");
     // The length of the value is the end of string - the start of the string
     size_t len = end_string - to_string;
-    // Remove the tab from the length of the parameter and value
-    len -= 1;
+    // Remove the tab and endline from the length of the parameter and value
+    len -= 2;
     // Add the length of the value, parameter, and quotationmarks
     jsonSize += 10;
     jsonSize += len;
