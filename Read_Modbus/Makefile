@@ -1,8 +1,9 @@
 LIB_NAME = modbus
+LIBS = ../libs
 INCLUDE_FILES = ../include
 
 readModbus: readModbus.o saveData.o main.o
-	$(CC) readModbus.o main.o saveData.o -l$(LIB_NAME) -o readModbus
+	$(CC) readModbus.o main.o saveData.o -l$(LIB_NAME) -L$(LIBS) -o readModbus
 main.o: readModbus.h main.c
 	$(CC) readModbus.h main.c -c
 readModbus.o: readModbus.c

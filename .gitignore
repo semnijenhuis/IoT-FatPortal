@@ -1,6 +1,6 @@
 # Compiled program #
 main
-serial
+readSerial
 readModbus
 .vscode/
 *.h.gch
@@ -11,3 +11,5 @@ readModbus
 *.ko
 *.order
 .env
+libs/lib*
+include/*.h
