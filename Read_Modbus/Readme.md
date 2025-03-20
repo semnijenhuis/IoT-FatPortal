@@ -11,6 +11,11 @@ To cross-compile the library you first need to download the library. This can be
 ![Output of readelf -h libmodbus.a](/Images/Compiled_Program.png)
 
 ## Turn on Modbus
+Before you can connect to the modbus you need to active this. This can be done in the webUI of the router. In here you go to Services->Modbus->Modbus TCP Server. Make sure the port and device nnumber are the same as defined in the readModbus.c file on lines 39 aaand 46 respectively
+
+ ![Settings of the Modbus](/Images/Screenshot_Modbus.png). 
+ 
+ !!MAKE SURE THAT AFTER YOU MAKE A CHANGE YOU CLICK SAVE & APPLY!!
 
 ## Cross compile program
 To cross-compile the programm make sure you have the libmodbus in the good place see the first alinea. Next define the environment variables. This is explained in the main readme and looks something like this: 
