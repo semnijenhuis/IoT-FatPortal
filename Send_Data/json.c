@@ -13,8 +13,13 @@ int getJsonSizeFromSerial(char* serialToConvert) {
 
   // For every parameter
   for (int i = 0; i < sizeof(parameters)/sizeof(parameters[0]); i++) {
+    // Add a tab to the parameter to look for the specific parameter, and not part of the parameter
+    char* parameterWithTab = malloc(strlen(parameters[i]) + 2);
+    memcpy(parameterWithTab, parameters[i], strlen(parameters[i]));
+    parameterWithTab[strlen(parameters[i])] = '\t';
+    parameterWithTab[strlen(parameters[i]) + 1] = 0;
     // Get the start of the parameter value
-    char* to_string = strstr(serialToConvert, parameters[i]);
+    char* to_string = strstr(serialToConvert, parameterWithTab);
     // Get the end of the parameter value
     char* end_string = strstr(to_string, "\n");
     // The length of the value is the end of string - the start of the string
@@ -37,8 +42,13 @@ int getJsonSizeFromSerial(char* serialToConvert) {
 int addSerialToJson(char* jsonValue, char* serialToConvert) {
   // For every parameter
   for (int i = 0; i < sizeof(parameters)/sizeof(parameters[0]); i++) {
+    // Add a tab to the parameter to look for the specific parameter, and not part of the parameter
+    char* parameterWithTab = malloc(strlen(parameters[i]) + 2);
+    memcpy(parameterWithTab, parameters[i], strlen(parameters[i]));
+    parameterWithTab[strlen(parameters[i])] = '\t';
+    parameterWithTab[strlen(parameters[i]) + 1] = 0;
     // Get the start of the parameter
-    char* to_string = strstr(serialToConvert, parameters[i]);
+    char* to_string = strstr(serialToConvert, parameterWithTab);
     // Get the end of the value
     char* end_string = strstr(to_string, "\n");
 

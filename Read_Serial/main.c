@@ -17,37 +17,35 @@
 char* getOneMessage(char* total_string);
 
 int main() {
-  while (1) {
-    // Try to open the serial port
-    if (setupSerialPort() < 0) {
-        return 1;
-    }
-
-    // Create a buffer where 2 messages will fit in
-    char totalBuf[MESSAGE_SIZE * 2];
-
-    // Try to read the data and set in in the totalBuf
-    if (readTwoSerialMessages(totalBuf, MESSAGE_SIZE) < 0) {
-        return 1;
-    }
-
-    // Close the serial port
-    closeSerialPort();
-
-    // Get one MPPT message out of the total buffer, because the standard beginning of the read is almost never the start of the message
-    char* oneMessage = getOneMessage(totalBuf);
-
-    printf("%s\n", oneMessage);
-
-    // Set the MPPT message into the device driver
-    int done = setInCharDevice(oneMessage, strlen(oneMessage));
-    
-    // Check if message succesfully saved
-    if (done == -1) {
-      printf("An error occured");
+  // Try to open the serial port
+  if (setupSerialPort() < 0) {
       return 1;
-    } 
   }
+
+  // Create a buffer where 2 messages will fit in
+  char totalBuf[MESSAGE_SIZE * 2];
+
+  // Try to read the data and set in in the totalBuf
+  if (readTwoSerialMessages(totalBuf, MESSAGE_SIZE) < 0) {
+      return 1;
+  }
+
+  // Close the serial port
+  closeSerialPort();
+
+  // Get one MPPT message out of the total buffer, because the standard beginning of the read is almost never the start of the message
+  char* oneMessage = getOneMessage(totalBuf);
+
+  printf("%s\n", oneMessage);
+
+  // Set the MPPT message into the device driver
+  int done = setInCharDevice(oneMessage, strlen(oneMessage));
+  
+  // Check if message succesfully saved
+  if (done == -1) {
+    printf("An error occured");
+    return 1;
+  } 
 
   return 0;
 }
