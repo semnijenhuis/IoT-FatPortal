@@ -1,14 +1,10 @@
 # Compiled program #
-sendData
-readSerial
-readModbus
 .vscode/
 *.h.gch
 *.o
 *.cmd
 *.mod*
 *.symvers
-*.ko
 *.order
 .env
 libs/lib*
