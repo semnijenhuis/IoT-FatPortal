@@ -12,6 +12,8 @@
 #include "json.h"
 #include "readData.h"
 
+const char* VERSION = "v0.0.1";
+
 // Endpoint of the fatportal
 static const char* WEBSERVER = "https://test.fatportal.nl/api/Ping";
 // ProductID to save the information to
@@ -22,6 +24,8 @@ static const char* ROUTER_DRIVER = "/dev/routerDriver";
 static const char* SERIAL_DRIVER = "/dev/serialDriver";
 
 int createJson(char* jsonString, char* serialData, char* routerData);
+
+void printArguments(int argc, char *argv[]);
 
 int main() {
   // Create a variable to save the serial information in
@@ -83,4 +87,20 @@ int createJson(char* jsonString, char* serialData, char* routerData) {
 
   // Set the end of the json
   strcat(jsonString, "}");
+}
+
+void printArguments(int argc, char *argv[]) {
+  for (int i = 1; i < argc; i++) {
+      if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
+          printf("%ss\n", VERSION);
+      } else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+          printf("Usage: sendData [OPTION]\n");
+          printf("Send data saved in the character device drivers, this is data from the MPPT and the router\n\n");
+          printf("    -v, --version\t Get the version of the program\n");
+          printf("    -h, --help\t\t Get info for program arguments\n");
+      } else {
+          printf("sendData: invalid option %s\n", argv[i]);
+          printf("Try 'sendData --help' for more information.\n");
+      }
+  }
 }

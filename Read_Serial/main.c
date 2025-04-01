@@ -14,9 +14,14 @@
 
 #define MESSAGE_SIZE 180
 
+const char* VERSION = "v0.0.1";
+
 char* getOneMessage(char* total_string);
 
-int main() {
+void printArguments(int argc, char *argv[]);
+
+int main(int argc, char *argv[]) {
+  printArguments(argc, argv);
   // Try to open the serial port
   if (setupSerialPort() < 0) {
       return 1;
@@ -65,4 +70,20 @@ char* getOneMessage(char* total_string) {
 
   // Return the char pointer to the start of the message
   return to_string;
+}
+
+void printArguments(int argc, char *argv[]) {
+  for (int i = 1; i < argc; i++) {
+      if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
+          printf("%ss\n", VERSION);
+      } else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+          printf("Usage: readSerial [OPTION]\n");
+          printf("Read the serial connection for a message and save it in a character device driver\n\n");
+          printf("    -v, --version\t Get the version of the program\n");
+          printf("    -h, --help\t\t Get info for program arguments\n");
+      } else {
+          printf("readSerial: invalid option %s\n", argv[i]);
+          printf("Try 'readSerial --help' for more information.\n");
+      }
+  }
 }

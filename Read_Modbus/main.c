@@ -5,7 +5,13 @@
 #include "readModbus.h"
 #include "saveData.h"
 
-int main() {
+const char* VERSION = "v0.0.1";
+
+void printArguments(int argc, char *argv[]);
+
+int main(int argc, char *argv[]) {
+    // Print arguments such as help and versions
+    printArguments(argc, argv); 
     // Create a variable of size 200 (Which is enough to save the current string in) and set every byte as 0
     char saveVariable[250];
     memset(&saveVariable, '\0', sizeof(saveVariable));
@@ -53,4 +59,20 @@ int main() {
 
     //Stop the program
     return 0;
+}
+
+void printArguments(int argc, char *argv[]) {
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
+            printf("%s\n", VERSION);
+        } else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            printf("Usage: readModbus [OPTION]\n");
+            printf("Read data from the routers Modbus, and saves the data in a character device driver\n\n");
+            printf("    -v, --version\t Get the version of the program\n");
+            printf("    -h, --help\t\t Get info for program arguments\n");
+        } else {
+            printf("readModbus: invalid option %s\n", argv[i]);
+            printf("Try 'readModbus --help' for more information.\n");
+        }
+    }
 }
