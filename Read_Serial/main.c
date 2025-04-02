@@ -14,7 +14,7 @@
 
 #define MESSAGE_SIZE 180
 
-const char* VERSION = "v0.0.1";
+const char* VERSION = "v0.0.2";
 
 char* getOneMessage(char* total_string);
 

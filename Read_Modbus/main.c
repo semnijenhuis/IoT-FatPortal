@@ -5,7 +5,7 @@
 #include "readModbus.h"
 #include "saveData.h"
 
-const char* VERSION = "v0.0.1";
+const char* VERSION = "v0.0.2";
 
 void printArguments(int argc, char *argv[]);
 

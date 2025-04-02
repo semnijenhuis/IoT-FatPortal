@@ -1,8 +1,8 @@
 BINARY 			:= saveSerialDriver
-KERNEL 			:= /home/tjoostrik/Downloads/rutos-ath79-trb2-sdk/build_dir/target-mips_24kc_musl/linux-ath79_24kc/linux-5.4.285
 ARCH			:= mips
 OBJECTS 		:= serialDriver.o
-CROSS_COMPILE	:= /home/tjoostrik/Downloads/rutos-ath79-trb2-sdk/staging_dir/toolchain-mips_24kc_gcc-8.4.0_musl/bin/mips-openwrt-linux-musl-
+KERNEL 			:= /home/tjoostrik/Documents/rutos-ath79-trb2-sdk/build_dir/target-mips_24kc_musl/linux-ath79_24kc/linux-5.4.285
+CROSS_COMPILE	:= /home/tjoostrik/Documents/rutos-ath79-trb2-sdk/staging_dir/toolchain-mips_24kc_gcc-8.4.0_musl/bin/mips-openwrt-linux-musl-
 
 obj-m += $(BINARY).o
 

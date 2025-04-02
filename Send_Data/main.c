@@ -12,7 +12,7 @@
 #include "json.h"
 #include "readData.h"
 
-const char* VERSION = "v0.0.1";
+const char* VERSION = "v0.0.2";
 
 // Endpoint of the fatportal
 static const char* WEBSERVER = "https://test.fatportal.nl/api/Ping";
