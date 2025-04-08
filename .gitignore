@@ -9,4 +9,3 @@
 .env
 libs/lib*
 include/*.h
-Read_Modbus/readModbus

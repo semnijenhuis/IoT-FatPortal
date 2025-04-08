@@ -25,16 +25,17 @@ static const char* SERIAL_DRIVER = "/dev/serialDriver";
 
 int createJson(char* jsonString, char* serialData, char* routerData);
 
-void printArguments(int argc, char *argv[], char* productId, char* url);
+int printArguments(int argc, char *argv[], char* productId, char* url);
 
 int main(int argc, char *argv[]) {
-  char productId[64] = {'\0'};
-  char url[100] = {'\0'};
+  char productId[64];
+  strcpy(productId, PRODUCTID);
+  char url[100];
+  strcpy(url, WEBSERVER);
 
-  printArguments(argc, argv, productId, url);
-
-  if (strlen(productId) == 0) strcpy(productId, PRODUCTID);
-  if (strlen(url) == 0) strcpy(url, WEBSERVER);
+  if (printArguments(argc, argv, productId, url) == -1) {
+    return -1;
+  }
   
   // Create a variable to save the serial information in
   char serialData[200];
@@ -97,10 +98,11 @@ int createJson(char* jsonString, char* serialData, char* routerData) {
   strcat(jsonString, "}");
 }
 
-void printArguments(int argc, char *argv[], char* productId, char* url) {
+int printArguments(int argc, char *argv[], char* productId, char* url) {
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
       printf("%ss\n", VERSION);
+      return -1;
     } else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
       printf("Usage: sendData [OPTION]\n");
       printf("Send data saved in the character device drivers, this is data from the MPPT and the router\n\n");
@@ -108,12 +110,14 @@ void printArguments(int argc, char *argv[], char* productId, char* url) {
       printf("    -h, --help\t\t Get info for program arguments\n");
       printf("    -p, --productid\t\t Enter a productid of the product in the FATportal\n");
       printf("    -u, --url\t\t The specify the url of the FATportal\n");
+      return -1;
     } else if (strcmp(argv[i], "--productid") == 0 || strcmp(argv[i], "-p") == 0) {
       if (i + 1 < argc && argv[i+1][0] != '-' && strlen(argv[i]) <= 64) {
         i++;
         strcpy(productId, argv[i]);
       } else {
         printf("Missing productid");
+        return -1;
       }
     } else if (strcmp(argv[i], "--url") == 0 || strcmp(argv[i], "-u") == 0) {
       if (i + 1 < argc && argv[i+1][0] != '-' && strlen(argv[i]) <= 100) {
@@ -121,10 +125,13 @@ void printArguments(int argc, char *argv[], char* productId, char* url) {
         strcpy(url, argv[i]);
       } else {
         printf("Missing url");
+        return -1;
       }
     } else {
       printf("sendData: invalid option %s\n", argv[i]);
       printf("Try 'sendData --help' for more information.\n");
+      return -1;
     }
   }
+  return 0;
 }
